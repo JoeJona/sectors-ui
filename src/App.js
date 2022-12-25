@@ -164,7 +164,7 @@ function App() {
             <input type="checkbox" id='agree' name='agree' ref={agreeRef} style={{marginLeft: -300, marginTop: 10}}/>
             <label style={{marginLeft: 5}} htmlFor="agree">Agree to terms</label>
             </div>
-            <button>Save</button>
+            <button className='btn'>Save</button>
         </form>
       </div>
       <h2>Sector List</h2>
