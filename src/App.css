@@ -92,3 +92,63 @@
   background-color: #04AA6D;
   color: white;
 }
+
+.que {
+  display: flex;
+  justify-content: flex-end;
+}
+.save {
+    border: none;
+    color: #fff;
+    background-color: #12b8e2;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 20px;
+    width: 25%;
+    cursor: pointer;
+}.add_form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1.4;
+  background: #f1f1f1;
+  padding: 14px 28px;
+  border-radius: 3px;
+  width: 30%;
+}
+form {
+    margin-top: 20px;
+    text-align: center;
+    padding: 10px;
+}
+form h2 {
+    margin-bottom: 10px;
+}
+form label {
+    margin-bottom: 10px;
+    padding: 8px;
+    margin-right: 5px;
+}
+form input {
+    margin-bottom: 10px;
+    padding: 8px;
+    margin-right: 5px;
+    width: 60%;
+}
+.close {
+    float: right;
+    margin-right: -20px;
+    font-size: large;
+}
+.update_user_btn {
+  border: none;
+  color: #fff;
+  background-color: #1265e2;
+  border-radius: 5px;
+  padding: 7px;
+  width: 40%;
+  margin-left: 10px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}

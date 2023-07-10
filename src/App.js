@@ -1,37 +1,53 @@
 import './App.css';
 import React, { useState, useRef, useEffect } from 'react'
-import Axios from 'axios'
+// import Axios from 'axios'
 
 
 function App() {
   const sectorList = [
-    // {
-    //   id: 1,
-    //   name: "S",
-    //   sector: "A",
-    //   isAgreed: true
-    // },
-    // {
-    //   id: 2,
-    //   name: "W",
-    //   sector: "F",
-    //   isAgreed: true
-    // },
+    {
+      id: 1,
+      name: "S",
+      sector: "A",
+      isAgreed: true
+    },
+    {
+      id: 2,
+      name: "W",
+      sector: "F",
+      isAgreed: true
+    },
   ]
 
   const [list, setList] = useState(sectorList)
-  const [id, setId] = useState(1)
+  const [id, setId] = useState(list.length+1)
   const [sectorListOption, setSectorListOption] = useState([])
+  const [name, setName] = useState("");
+  const [sector, setSector] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    Axios.get("https://sectors-list-default-rtdb.firebaseio.com/data.json").then((res) => {
-      setSectorListOption(res.data.people)
-    });
+    setSectorListOption(sectorList);
   }, [])
 
   const nameRef = useRef()
   const sectorRef = useRef()
   const agreeRef = useRef()
+
+  const showFormToggle = (event) => {
+    setShowForm(!showForm);
+  }
+
+  const edit = (e, sectId) => {
+    e.preventDefault();
+    let sectName = e.target.elements.name.value;
+    let setcorInvolved = e.target.elements.sector.value;
+    const sec = setList.map((sect) => 
+      sect.id === sectId ? {sectId, sectName, setcorInvolved} : sect
+    );
+    setList(sec);
+    showFormToggle();
+    }
 
   function saveSector(event) {
     event.preventDefault()
@@ -39,7 +55,7 @@ function App() {
     const sector = event.target.elements.sector.value
     const agree = event.target.elements.agree.checked == true ? true : false
 
-    setId(id+1)
+    setId(id+1);
 
     const newSector = {
       id: id,
@@ -68,17 +84,18 @@ function App() {
   }
 
   return (
+    <>
     <div className="App">
       <div className='sec-que'>
         <form action="" onSubmit={saveSector} className="sec-form">
             <h4>Please enter your name and pick the Sectors you are currently involved in.</h4>
            <div>
            <label htmlFor="">Name : </label>
-            <input type="text" name='name' ref={nameRef} style={{width: 480, padding: 10, marginLeft: 12}}/>
+            <input type="text" name='name' required ref={nameRef} style={{width: 480, padding: 10, marginLeft: 12}}/>
            </div>
            <div>
            <label htmlFor="">Sectors :</label>
-            <select multiple="" name="sector" ref={sectorRef} style={{marginLeft: 6}}>
+            <select multiple="" name="sector" required ref={sectorRef} style={{marginLeft: 6}}>
                       <option value="Manufacturing">Manufacturing</option>
                       <option value="Construction materials">&nbsp;&nbsp;&nbsp;&nbsp;Construction materials</option>
                       <option value="Electronics and Optics">&nbsp;&nbsp;&nbsp;&nbsp;Electronics and Optics</option>
@@ -161,8 +178,8 @@ function App() {
             </select>
            </div>
             <div>
-            <input type="checkbox" id='agree' name='agree' ref={agreeRef} style={{marginLeft: -300, marginTop: 10}}/>
-            <label style={{marginLeft: 5}} htmlFor="agree">Agree to terms</label>
+            <input type="checkbox" id='agree' name='agree' required ref={agreeRef} style={{marginLeft: -400, marginTop: 10}}/>
+            <label style={{marginLeft: -200 }} htmlFor="agree">Agree to terms</label>
             </div>
             <button className='btn'>Save</button>
         </form>
@@ -173,22 +190,52 @@ function App() {
         <tr>
           <th>Name</th>
           <th>Sector</th>
+          <th>Terms Of Agreement</th>
+          <th></th>
         </tr>
         {
           list.map((sec, key) => (
             <tr key={key}>
-              <td>{sec.name}</td>
+              <td>{sec.id}</td>
               <td>{sec.sector}</td>
-              {/* <td>{sec.agree}</td> */}
-              {/* <td>
-                <button>Edit</button>
-              </td> */}
+              <td>{sec.agree}Agreed</td>
+              <td>
+              <button className="update_user_btn" onClick={() => {
+                      setId(sec._id);
+                      setName(sec.name);
+                      setSector(sec.sector);
+                      showFormToggle()
+                    }}>Edit</button>
+                    {showForm && (
+                    <div className="add_form">
+                    <button className="close" onClick={() => {
+                      setId('')
+                      setName('');
+                      setSector('');
+                      showFormToggle();
+                    }}>X</button>
+                    <form onSubmit={() => {edit(sec.id)}}>
+                    <h2>Update User</h2>
+                        <div className="que">
+                        <label htmlFor="">Name</label>
+                        <input required type="text" value={name} onChange={(event) => {setName(event.target.value)}} />
+                        </div>
+                        <div className="que">
+                        <label htmlFor="">Sector</label>
+                        <input required type="text" value={sector} onChange={(event) => {setSector(event.target.value)}} /><br />
+                        </div>
+                        <button className="save" type="submit">Save</button>
+                    </form>
+                    </div>
+                    )}
+              </td>
             </tr>
           ))
         }
       </table>
       </div>
     </div>
+    </>
   );
 }
 
