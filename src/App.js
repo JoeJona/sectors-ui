@@ -69,7 +69,7 @@ function App() {
     })
 
     nameRef.current.value = ""
-    sectorRef.current.value = ""
+    // sectorRef.current.value = ""
     agreeRef.current.checked = false
 
   }
